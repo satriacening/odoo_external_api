@@ -1,0 +1,6 @@
+github.com/kolo/xmlrpc v0.0.0-20201022064351-38db28db192b h1:iNjcivnc6lhbvJA3LD622NPrUponluJrBWPIwGG/3Bg=
+github.com/kolo/xmlrpc v0.0.0-20201022064351-38db28db192b/go.mod h1:pcaDhQK0/NJZEvtCO0qQPPropqV0sJOJ6YW7X+9kRwM=
+github.com/skilld-labs/go-odoo v1.8.0 h1:fRT9bLFW/OSaGJW2EIbXi5rlzKAt2Q8n+yz1Vq6F2qo=
+github.com/skilld-labs/go-odoo v1.8.0/go.mod h1:GbqkeMbJXkQ7eLGhaYWbh2LCko4FdPxwYySbnfgZVIU=
+golang.org/x/text v0.3.3/go.mod h1:5Zoc/QRtKVWzQhOtBMvqHzDpF6irO9z98xDceosuGiQ=
+golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
