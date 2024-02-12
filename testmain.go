@@ -9,22 +9,28 @@ import (
 )
 
 var (
-	url      = "http://localhost:8916"
-	db       = "16enterprise"
+	url      = "http://localhost:8116"
+	db       = "16hris"
 	username = "odoo"
 	password = "odoo"
 )
 
-func testmain() {
+func main() {
+	// Start waktu untuk menghitung berapa lama program di jalankan
 	startTime := time.Now()
+
+	// endpoint menyediakan meta-call yang tidak memerlukan autentikasi,
 	client, err := xmlrpc.NewClient(fmt.Sprintf("%s/xmlrpc/2/common", url), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("ini client", client)
+
 	common := map[string]any{}
 	if err := client.Call("version", nil, &common); err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("ini common", common)
 
 	var uid int64
 	if err := client.Call("authenticate", []any{
@@ -33,10 +39,14 @@ func testmain() {
 	}, &uid); err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("ini uid", uid)
+
 	models, err := xmlrpc.NewClient(fmt.Sprintf("%s/xmlrpc/2/object", url), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("ini models", models)
+
 	var result bool
 	if err := models.Call("execute_kw", []any{
 		db, uid, password,
@@ -46,6 +56,8 @@ func testmain() {
 	}, &result); err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("ini result", result)
+
 	var records []int64
 	if err := models.Call("execute_kw", []any{
 		db, uid, password,
@@ -56,8 +68,7 @@ func testmain() {
 	}, &records); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("ini data", records)
-	endTime := time.Now()
+	fmt.Println("ini records", records)
 
 	var recordFields []map[string]any
 	if err := models.Call("execute_kw", []any{
@@ -72,15 +83,26 @@ func testmain() {
 	}, &recordFields); err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("ini recordFileds", recordFields)
 
-	// for index, value := range recordFields {
-	// 	fmt.Printf("Data : %d\n", index)
-	// 	for _, val := range value {
-	// 		fmt.Println("---------", val)
-	// 	}
-	// }
+	var recordFields1 []map[string]any
+	if err := models.Call("execute_kw", []any{
+		db, uid, password,
+		"res.partner", "search_read",
+		[]any{[]any{
+			[]any{"is_company", "=", true},
+		}},
+		map[string]any{
+			"fields": []string{"name", "country_id", "comment"},
+			"limit":  5,
+		},
+	}, &recordFields1); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("ini recordFileds1", recordFields1)
 
 	// Hitung durasi waktu untuk mendapatkan waktu eksekusi
+	endTime := time.Now()
 	executionTime := endTime.Sub(startTime)
 	fmt.Printf("Waktu eksekusi program: %s\n", executionTime)
 }
